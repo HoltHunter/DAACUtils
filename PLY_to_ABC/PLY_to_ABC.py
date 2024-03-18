@@ -47,16 +47,16 @@ from alembic.Util import *
 ####
 
 def getCwdTemplateNameFor( extentionString ):
-	wildCardMatchString = "*" + extentionString
-	aSingleFilenameMatch = glob.glob( wildCardMatchString )[0]
-	print (aSingleFilenameMatch)
-	# removing the extention
-	template = os.path.splitext( aSingleFilenameMatch )[0]
-	zfillNum = 0
-	while list(template)[-1].isdigit():
-		template = template[:-1]
-		zfillNum += 1
-	return( template, zfillNum )
+    wildCardMatchString = "*" + extentionString
+    aSingleFilenameMatch = glob.glob( wildCardMatchString )[0]
+    print (aSingleFilenameMatch)
+    # removing the extention
+    template = os.path.splitext( aSingleFilenameMatch )[0]
+    zfillNum = 0
+    while list(template)[-1].isdigit():
+        template = template[:-1]
+        zfillNum += 1
+    return( template, zfillNum )
 
 
 ply_TemplateName, zfillNum = getCwdTemplateNameFor( "ply" )
@@ -74,11 +74,11 @@ def testForRGBAInPLYFile():
 
     plydata = PlyData.read(plyPath)
     try:
-    	vertex = plydata['vertex'][0]
-    	r = float(vertex['red'])
-    	return True
+        vertex = plydata['vertex'][0]
+        r = float(vertex['red'])
+        return True
     except ValueError:
-    	return False
+        return False
 
 def testForUVsInPLYFile():
     fileIndex = str(0).zfill(zfillNum)
@@ -87,12 +87,12 @@ def testForUVsInPLYFile():
 
     plydata = PlyData.read(plyPath)
     try:
-    	vertex = plydata['vertex'][0]
-    	u = float(vertex['u'])
-    	v = float(vertex['v'])
-    	return True
+        vertex = plydata['vertex'][0]
+        u = float(vertex['u'])
+        v = float(vertex['v'])
+        return True
     except ValueError:
-    	return False
+        return False
 
 def writeTempABCFiles(fileIndex, cBool, tBool):
 
@@ -323,9 +323,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.formatter_class = argparse.RawTextHelpFormatter
     if ( False ):
-    	pd = dir(parser)
-    	for i,d in enumerate(pd) :
-    		print ("%d %s" % (i,d))
+        pd = dir(parser)
+        for i,d in enumerate(pd) :
+            print ("%d %s" % (i,d))
 
     parser.add_argument("-n", "--np", help="specify number of simultaneous processes, default=10", action="store", type=int, dest='np', default=10)
     parser.add_argument("-c", "--color", help="process colorVertex PLYs", action="store_true", dest='color', default=False)
@@ -333,34 +333,34 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     if args.np :
-    	print ("Number of threads/processors: %d" % args.np)
-    	sys.stdout.flush()
-    	poolBatchSize = args.np
+        print ("Number of threads/processors: %d" % args.np)
+        sys.stdout.flush()
+        poolBatchSize = args.np
     if args.color :
-    	print ("Processing colorVertex PLYs")
-    	sys.stdout.flush()
-    	plyContainsColors = True
+        print ("Processing colorVertex PLYs")
+        sys.stdout.flush()
+        plyContainsColors = True
     if args.texture :
-    	print ("Processing texture coordinates PLYs")
-    	sys.stdout.flush()
-    	plyContainsTexture = True
+        print ("Processing texture coordinates PLYs")
+        sys.stdout.flush()
+        plyContainsTexture = True
 
     ## CHECK FOR RGBA/UV INFO
     if plyContainsColors:
-    	isRGBAInFile = testForRGBAInPLYFile()
-    	print ("isRGBAInFile from testForRGBAInPLYFile: %r" % isRGBAInFile)
-    	if not isRGBAInFile:
-    		print ("\nWARNING: you specified color processing (-c, --color), but there is no RGBA in the PLY file.")
-    		print ("Turning OFF color processing. Moron.")
-    		plyContainsColors = False
+        isRGBAInFile = testForRGBAInPLYFile()
+        print ("isRGBAInFile from testForRGBAInPLYFile: %r" % isRGBAInFile)
+        if not isRGBAInFile:
+            print ("\nWARNING: you specified color processing (-c, --color), but there is no RGBA in the PLY file.")
+            print ("Turning OFF color processing. Moron.")
+            plyContainsColors = False
 
     if plyContainsTexture:
-    	isUVsInFile = testForUVsInPLYFile()
-    	print ("isUVsInFile from testForUVsInPLYFile: %r" % isUVsInFile)
-    	if not isUVsInFile:
-    		print ("\nWARNING: you specified texture processing (-t, --texture), but there are no UVs in the PLY file.")
-    		print ("Turning OFF texture processing. Moron.")
-    		plyContainsTexture = False
+        isUVsInFile = testForUVsInPLYFile()
+        print ("isUVsInFile from testForUVsInPLYFile: %r" % isUVsInFile)
+        if not isUVsInFile:
+            print ("\nWARNING: you specified texture processing (-t, --texture), but there are no UVs in the PLY file.")
+            print ("Turning OFF texture processing. Moron.")
+            plyContainsTexture = False
     print ("plyContainsColors: %r" % plyContainsColors)
     print ("plyContainsTexture: %r" % plyContainsTexture)
 
@@ -368,7 +368,7 @@ if __name__ == '__main__':
     # Create the temp directory
     ####
     if not os.path.exists(ambientTempDir):
-    	os.makedirs(ambientTempDir)
+        os.makedirs(ambientTempDir)
 
     ## PRINT
     numPlyFiles = len( glob.glob("*.ply"))
