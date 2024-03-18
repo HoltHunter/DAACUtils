@@ -1,0 +1,11 @@
+To build a Singularity container from the definition file (ubuntu.def):
+singularity build <path>/ubuntu.sif <path>/PLY_to_ABC/Singularity/ubuntu.def
+
+Note that this needs to be done as root/sys admin. Can try using the Singularity "--fakeroot"
+option to get around having to be root. This creates a .sif file that is passed to Singularity
+to run the container. To run the container looks like:
+singularity exec --bind $PWD:/data,/home/acbauer/Code/DAAC/DAACUtils/PLY_to_ABC/Python/:/code ~/Util/Singularity/ubuntu.sif bash
+
+--bind mounts specific directories on the host file system to the container instance file system, e.g. $PWD to /data
+and /data,/home/acbauer/Code/DAAC/DAACUtils/PLY_to_ABC/Python/ to /code. The .sif file for which Singularity instance
+to run and bash to start it with a bash shell.
