@@ -1,11 +1,6 @@
 #
-# This script converts PLYs in the current dirctory to Alembic Files
-# (i.e. you simply need to copy this script into the current PLY files directory)
-# It will create an AlembicFiles directory
-#
-# Use:
-#	-> python PLY_to_ABC_WIN.py -c -t
-#	[-c for color; -t for texture coordinates]
+# This script is used by combine_ABC.py to generate temporary ABC
+# files from PLY files.
 #
 # Dependencies:
 # 	Python 3.10
@@ -51,21 +46,21 @@ verboseOutput = False
 def testForRGBAInPLYFile(filename):
     plydata = PlyData.read(filename)
     try:
-    	vertex = plydata['vertex'][0]
-    	r = float(vertex['red'])
-    	return True
+        vertex = plydata['vertex'][0]
+        r = float(vertex['red'])
+        return True
     except ValueError:
-    	return False
+        return False
 
 def testForUVsInPLYFile(filename):
     plydata = PlyData.read(filename)
     try:
-    	vertex = plydata['vertex'][0]
-    	u = float(vertex['u'])
-    	v = float(vertex['v'])
-    	return True
+        vertex = plydata['vertex'][0]
+        u = float(vertex['u'])
+        v = float(vertex['v'])
+        return True
     except ValueError:
-    	return False
+        return False
 
 def writeTempABCFiles(plyFilename, fileIndex, ambientTempDir, processInputColors, processInputTextures):
     sys.stdout.write(".")
@@ -89,10 +84,10 @@ def writeTempABCFiles(plyFilename, fileIndex, ambientTempDir, processInputColors
 
     ## SANITY CHECKS
     if( verboseOutput ) :
-    	print (str(fileIndex) + " plyFaceCount: " + str(plyFaceCount))
-    	print (str(fileIndex) + " plyVertexCount: " + str(plyVertexCount))
-    	print ("processInputColors: " + str(processInputColors))
-    	print ("processInputTextures: " + str(processInputTextures))
+        print (str(fileIndex) + " plyFaceCount: " + str(plyFaceCount))
+        print (str(fileIndex) + " plyVertexCount: " + str(plyVertexCount))
+        print ("processInputColors: " + str(processInputColors))
+        print ("processInputTextures: " + str(processInputTextures))
     sys.stdout.flush()
 
     ## FACE COUNT & INDICES
@@ -136,7 +131,7 @@ def writeTempABCFiles(plyFilename, fileIndex, ambientTempDir, processInputColors
     ## SET POINTS, COLORS, & UVS
     points = setArray(P3fTPTraits, pointList)
     if (processInputColors):
-    	rgba = setArray(C4fTPTraits, rgbaList)
+        rgba = setArray(C4fTPTraits, rgbaList)
     if (processInputTextures):
         uvsArray = setArray(V2fTPTraits, uvList)
 
@@ -196,20 +191,20 @@ def generateTempAbcs(inputPlyFilenames, ambientTempDir, processInputColors, proc
 
     ## CHECK FOR RGBA/UV INFO
     if processInputColors:
-    	isRGBAInFile = testForRGBAInPLYFile(inputPlyFilenames[0])
-    	print ("isRGBAInFile from testForRGBAInPLYFile: %r" % isRGBAInFile)
-    	if not isRGBAInFile:
-    	    print ("\nWARNING: you specified color processing (-c, --color), but there is no RGBA in the PLY file.")
-    	    print ("Turning OFF color processing. Moron.")
-    	    processInputColors = False
+        isRGBAInFile = testForRGBAInPLYFile(inputPlyFilenames[0])
+        print ("isRGBAInFile from testForRGBAInPLYFile: %r" % isRGBAInFile)
+        if not isRGBAInFile:
+            print ("\nWARNING: you specified color processing (-c, --color), but there is no RGBA in the PLY file.")
+            print ("Turning OFF color processing. Moron.")
+            processInputColors = False
 
     if processInputTextures:
-    	isUVsInFile = testForUVsInPLYFile(inputPlyFilenames[0])
-    	print ("isUVsInFile from testForUVsInPLYFile: %r" % isUVsInFile)
-    	if not isUVsInFile:
-    	    print ("\nWARNING: you specified texture processing (-t, --texture), but there are no UVs in the PLY file.")
-    	    print ("Turning OFF texture processing. Moron.")
-    	    processInputTextures = False
+        isUVsInFile = testForUVsInPLYFile(inputPlyFilenames[0])
+        print ("isUVsInFile from testForUVsInPLYFile: %r" % isUVsInFile)
+        if not isUVsInFile:
+            print ("\nWARNING: you specified texture processing (-t, --texture), but there are no UVs in the PLY file.")
+            print ("Turning OFF texture processing. Moron.")
+            processInputTextures = False
     print ("processInputColors: %r" % processInputColors)
     print ("processInputTextures: %r" % processInputTextures)
 
@@ -217,7 +212,7 @@ def generateTempAbcs(inputPlyFilenames, ambientTempDir, processInputColors, proc
     # Create the temp directory
     ####
     if not os.path.exists(ambientTempDir):
-    	os.makedirs(ambientTempDir)
+        os.makedirs(ambientTempDir)
 
     ## PRINT
     print ("\nConverting " + str(len(inputPlyFilenames)) + " PLY's, (" + str(poolBatchSize) + " at a time)")
