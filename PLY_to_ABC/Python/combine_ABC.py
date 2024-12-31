@@ -67,6 +67,7 @@ def importABC(inputAbcFilename):
     ## XFORM
     top = aA.IArchive(inputAbcFilename).getTop()
     #xform = aAG.IXform(top, 'cube1')
+    # below could have problems if there is no data
     xform = aAG.IXform(top, top.getChild(0).getName())
 
     ## POLYMESH
@@ -126,9 +127,11 @@ def exportABC(outputAbcFilename, inputAbcFilenames):
     fps = 30
     timePerCycle = float(1) / fps
     numSamplesPerCycle = len(tvec)
-    #print("time information is ", len(tvec), tvec, timePerCycle)
+    print("time information is ", len(tvec), tvec, timePerCycle)
+    
     tst = aACA.TimeSamplingType( numSamplesPerCycle, timePerCycle )
     ts = aACA.TimeSampling( tst, tvec )
+    print("AFTER time information is ", len(tvec), tvec, timePerCycle)
 
     ## CREATE XFORM
     top = aA.OArchive( outputAbcFilename ).getTop()
@@ -234,6 +237,7 @@ if __name__ == '__main__':
     if args.extension == 'ply':
         inputPlyFilenames = glob.glob(os.path.join(workingDir, globName))
         inputPlyFilenames.sort()
+        print("PLY files ", len(inputPlyFilenames), inputPlyFilenames)
         ambientTempDir = os.path.join(workingDir, 'TempABCFiles')
         P2A.generateTempAbcs(inputPlyFilenames, ambientTempDir, processInputColors, processInputTextures, args.np)
         inputAbcFilenames = glob.glob(os.path.join(ambientTempDir, '*abc'))
@@ -249,6 +253,7 @@ if __name__ == '__main__':
         output = args.basefilename
 
     inputAbcFilenames.sort()
+    print("ABC files ", len(inputAbcFilenames), inputAbcFilenames)
     ## RECOMBINE INTO ONE FINAL ABC
     print ("Recombining " + str(len(inputAbcFilenames)) + " ABC's...")
     if len(inputAbcFilenames) == 0:
